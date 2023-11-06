@@ -1,12 +1,13 @@
 'use client'
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from "react";
+import { check, pencil, trash } from "./icons";
 
 export default function Tasks({props}: {props:{index:number, task:string, removeTask:(index:number) => void, editTask:(index:number, task:string) => void}}){
 
     const [removed, setRemoved] = useState(true);
     const [editing, setEditing] = useState(false);
-    const [task, setTask] = useState(props.task);
+    const [task, setTask] = useState('');
 
     const inputRef = useRef(null);
     const editRef = useRef(null);
@@ -17,7 +18,7 @@ export default function Tasks({props}: {props:{index:number, task:string, remove
 
     const removeTask = async (index:number) => {
         setRemoved(true);
-        await sleep(200);
+        await sleep(150);
         props.removeTask(index);
         setRemoved(false);
     }
@@ -57,16 +58,19 @@ export default function Tasks({props}: {props:{index:number, task:string, remove
 
     useEffect(() => {
         addTask()
-    }, [])
+        setTask(props.task);
+    }, [props.task])
 
     return(
-        <div key={props.index} className={`bg-orange-300 max-w-[20rem] w-full shadow-lg rounded-lg p-3 flex justify-between transition-all ${removed ? 'scale-0 opacity-0': ''}`}>
-            <input className="bg-transparent outline-none font-semibold" disabled={!editing} value={task} ref={inputRef} onBlur={blurTask} onChange={editTask}/>
+        <div key={props.index} className={`bg-orange-300 max-w-[20rem] w-full shadow-lg rounded-lg p-3 flex justify-between transition-all border-2 ${removed ? 'scale-0 opacity-0': ''} ${editing ? 'border-orange-500' : 'border-transparent'}`}>
+            <form onSubmit={startEditingTask}>
+                <input className="bg-transparent outline-none font-semibold" disabled={!editing} value={task} ref={inputRef} onBlur={blurTask} onChange={editTask}/>
+
+            </form>
             <div className="flex gap-2">
-                <button ref={editRef} onClick={startEditingTask}>e</button>
-                <button onClick={() => removeTask(props.index)}>d</button>
+                <button ref={editRef} onClick={startEditingTask}>{editing ? check :pencil}</button>
+                <button onClick={() => removeTask(props.index)}>{trash}</button>
             </div>
-            
         </div>
     )
 }

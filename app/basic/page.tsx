@@ -13,7 +13,7 @@ export default function Home() {
     >
         <div className='fixed w-full bg-orange-500 h-16 flex justify-center text-white'>
             <div className='container flex w-full justify-between h-full items-center px-4'>
-                <div>Image</div>
+                <div><Image src='/logo.png' width={40} height={40} alt='logo'/></div>
                 <div className='flex gap-8 font-bold'>
                     <a href="#">Home</a>
                     <a href="#">About</a>

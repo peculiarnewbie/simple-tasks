@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import { trash } from "../icons";
 
 export default function Tasks({props}: {props:{index:number, task:string, removeTask:(index:number) => void}}){
 
@@ -22,7 +23,7 @@ export default function Tasks({props}: {props:{index:number, task:string, remove
             <p>{props.task}</p>
             <div>
                 <button></button>
-                <button onClick={() => removeTask(props.index)}>d</button>
+                <button onClick={() => removeTask(props.index)}>{trash}</button>
             </div>
             
         </div>
