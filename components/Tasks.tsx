@@ -62,14 +62,14 @@ export default function Tasks({props}: {props:{index:number, task:string, remove
     }, [props.task])
 
     return(
-        <div key={props.index} className={`bg-orange-300 max-w-[20rem] w-full shadow-lg rounded-lg p-3 flex justify-between transition-all border-2 ${removed ? 'scale-0 opacity-0': ''} ${editing ? 'border-orange-500' : 'border-transparent'}`}>
-            <form onSubmit={startEditingTask}>
-                <input className="bg-transparent outline-none font-semibold" disabled={!editing} value={task} ref={inputRef} onBlur={blurTask} onChange={editTask}/>
+        <div key={props.index} className={`bg-orange-300 max-w-[20rem] w-full shadow-lg rounded-lg p-2 flex justify-between transition-all border-2 items-center ${removed ? 'scale-0 opacity-0': ''} ${editing ? 'border-orange-500 cursor-default py-0' : 'border-transparent cursor-grab'}`}>
+            <form className="grow w-6" onSubmit={startEditingTask}>
+                <input className={`bg-transparent outline-none font-semibold transition-all w-full ${editing ? "pointer-events-auto py-3" : "pointer-events-none"}`} disabled={!editing} value={task} ref={inputRef} onBlur={blurTask} onChange={editTask}/>
 
             </form>
-            <div className="flex gap-2">
-                <button ref={editRef} onClick={startEditingTask}>{editing ? check :pencil}</button>
-                <button onClick={() => removeTask(props.index)}>{trash}</button>
+            <div className="flex">
+                <button className="p-2" ref={editRef} onClick={startEditingTask}>{editing ? check :pencil}</button>
+                <button className="p-2" onClick={() => removeTask(props.index)}>{trash}</button>
             </div>
         </div>
     )
