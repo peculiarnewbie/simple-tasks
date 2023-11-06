@@ -19,10 +19,9 @@ export default function Tasks({props}: {props:{index:number, task:string, remove
     }
 
     return(
-        <div key={props.index} className={`bg-orange-300 max-w-[20rem] w-full rounded-lg p-3 flex justify-between transition-all ${removed ? 'scale-0 opacity-0': ''}`}>
-            <p>{props.task}</p>
+        <div key={props.index} className={`bg-orange-300 max-w-[20rem] w-full rounded-lg p-3 flex justify-between transition-all border-2 border-transparent ${removed ? 'scale-0 opacity-0': ''}`}>
+            <p className="font-semibold">{props.task}</p>
             <div>
-                <button></button>
                 <button onClick={() => removeTask(props.index)}>{trash}</button>
             </div>
             

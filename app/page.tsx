@@ -15,9 +15,7 @@ export default function Home() {
             <div className='container flex w-full justify-between h-full items-center px-4'>
                 <div><div><Image src='/logo.png' width={40} height={40} alt='logo'/></div></div>
                 <div className='flex gap-8 font-bold'>
-                    <a href="#">Home</a>
-                    <a href="#">About</a>
-                    <a href="#">Service</a>
+                    <a href="/basic">Basic Version</a>
                 </div>
             </div>
         </div>
