@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from "react";
-import TaskInput from "./taskInput";
+import TaskInput from "./TaskInputBasic";
+import Tasks from "./TasksBasic";
 
 
-export default function Tasks(){
+export default function MainWindow(){
     const [tasks, setTasks] = useState(['Go Shopping', 'Do Laundry', 'Zoom Meeting']);
 
   const addTask = (task:string) => {
@@ -30,14 +31,7 @@ export default function Tasks(){
                 <div className='flex flex-col items-center gap-4'>
                   {tasks.map((task, index) => {
                     return(
-                      <div key={index} className='bg-orange-300 max-w-[20rem] w-full rounded-lg p-3 flex justify-between'>
-                        <p>{task}</p>
-                        <div>
-                            <button></button>
-                            <button onClick={() => removeTask(index)}>d</button>
-                        </div>
-                            
-                      </div>
+                      <Tasks key={index+task} props={{index, task, removeTask}}/>
                     )
                   })}
                 </div>
