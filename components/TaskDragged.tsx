@@ -64,10 +64,13 @@ export default function TaskDragged({props} : {props:{index:number, task:string,
     }
     else {
         return(
-            <div ref={panelRef} className="w-full flex justify-center"
+            <div ref={panelRef} className="w-full flex justify-center cursor-grabbing"
                 style={{transform: `translate(0px, ${offset}px)`}}
             >
-                <Tasks props={{index , task}}/>
+                <div className="w-full flex justify-center pointer-events-none">
+                    <Tasks props={{index , task}}/>
+
+                </div>
             </div>
         )        
     }
