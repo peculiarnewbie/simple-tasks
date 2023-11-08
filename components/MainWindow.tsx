@@ -3,38 +3,44 @@
 import { useEffect, useState } from "react";
 import TaskInput from "./TaskInput";
 import Tasks from "./Tasks";
+import TaskDragged from "./TaskDragged";
 
 
 export default function MainWindow(){
-  const [tasks, setTasks] = useState(['Go Shopping', 'Do Laundry', 'Zoom Meeting']);
+  const [tasks, setTasks] = useState([
+    {task:'Go Shopping', isEmpty:false},
+    {task:'Do Stuff', isEmpty:false},
+    {task:'Zoom Meeting',  isEmpty:false}
+  ]);
   const [deletedTask, setDeletedTask] = useState({task:'', index:-1})
+  const [draggedTask, setDraggedTask] = useState({task:'', index:-1, pos:0})
 
   let deleteTimeout:NodeJS.Timeout;
 
   const addTask = (task:string) => {
     const temp = [...tasks];
-    temp.push(task);
+    temp.push({task:task, isEmpty:false});
     setTasks(temp);
     resetDeletedTask();
   }
 
   const removeTask = (index:number) => {
     let temp = [...tasks];
-    setDeletedTask({task:temp[index], index:index});
+    setDeletedTask({task:temp[index].task, index:index});
     temp.splice(index, 1);
     setTasks(temp);
   }
 
   const editTask = (index:number, task:string) => {
     const temp = [...tasks];
-    temp[index] = task;
+    temp[index].task = task;
     setTasks(temp);
     resetDeletedTask();
   }
 
   const undoDelete = () => {
     let temp = [...tasks];
-    temp.splice(deletedTask.index, 0, deletedTask.task)
+    temp.splice(deletedTask.index, 0, {task:deletedTask.task, isEmpty:false})
     setTasks(temp)
     resetDeletedTask();
   }
@@ -42,6 +48,37 @@ export default function MainWindow(){
   const resetDeletedTask = () => {
     clearTimeout(deleteTimeout);
     setDeletedTask({task:'', index:-1})
+  }
+
+  const reorderTask = (index:number, offset:number, pos?:number) => {
+    console.log(index, offset)
+    if(offset == 0){
+      let tempArr = [...tasks]
+      if(tempArr[index].isEmpty){ // stop ordering
+        console.log("done", tasks, tasks[0])
+        tempArr.forEach((task) => {
+          task.isEmpty = false;
+        })
+        tempArr[index].isEmpty = false;
+        setDraggedTask({task: '', index: -1, pos: 0})
+        // setTasks(tempArr);
+
+      } else { // start ordering
+        tempArr[index].isEmpty = true;
+        console.log('wtf')
+        setDraggedTask({task:tempArr[index].task, index:index, pos:pos ?? 0})
+        // setTasks([...tempArr]);
+      }
+    }
+    else {
+      let temp = [...tasks]
+      console.log('move', index, index + offset, temp);
+      console.log(temp[index].task, temp[index + offset].task)
+      const tempTask = temp[index];
+      temp[index] = temp[index + offset];
+      temp[index + offset] = tempTask;
+      setTasks(temp);
+    }
   }
 
   useEffect(() => {
@@ -55,6 +92,10 @@ export default function MainWindow(){
     return () => clearTimeout(deleteTimeout);
   }, [deletedTask])
 
+  useEffect(() => {
+    console.log('tasks', tasks);
+  }, [tasks])
+
   return(
       <div className='bg-white h-full w-full sm:w-1/2 max-w-[32rem] sm:rounded-xl sm:h-2/3 overflow-hidden shadow-lg flex flex-col'>
             <div className='relative h-fit p-10 bg-slate-100 flex flex-col items-center gap-6'>
@@ -66,9 +107,10 @@ export default function MainWindow(){
               <div className='flex flex-col w-full items-center gap-4'>
                 {tasks.map((task, index) => {
                   return(
-                    <Tasks key={index+task} props={{index, task, removeTask, editTask}}/>
+                    <Tasks key={index} props={{index, task:task.task, isEmpty:task.isEmpty, removeTask, editTask, reorderTask}}/>
                   )
                 })}
+                <TaskDragged key={'dragged'} props={{index:draggedTask.index, task:draggedTask.task, pos:draggedTask.pos, length:tasks.length, reorderTask}}/>
               </div>
           </div>
       </div>
