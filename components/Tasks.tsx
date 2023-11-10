@@ -24,7 +24,7 @@ export default function Tasks({props}: {props:{index:number, task:string, isEmpt
 
     function sleep(ms:number) {
         return new Promise(resolve => setTimeout(resolve, ms));
-     }
+    }
 
     const removeTask = async (index:number) => {
         setRemoved(true);
@@ -114,7 +114,7 @@ export default function Tasks({props}: {props:{index:number, task:string, isEmpt
 
     if(props.isEmpty){
         return(
-            <div className=" bg-blue-100 max-w-[20rem] w-full rounded-lg py-[26px] text-black">
+            <div className=" bg-blue-100 max-w-[20rem] w-full rounded-lg py-[26px]">
                 
             </div>
         )
@@ -122,7 +122,6 @@ export default function Tasks({props}: {props:{index:number, task:string, isEmpt
     else{
         return(
             <div className={`bg-orange-300 max-w-[20rem] w-full shadow-lg rounded-lg p-2 flex justify-between border-2 items-center ${isDragging ? 'transition-none' : 'transition-all'} ${removed ? 'scale-0 opacity-0': ''} ${editing ? 'border-orange-500 cursor-default py-0' : 'border-transparent cursor-grab'}`}
-                style={{transform: `translate(0px, 0px)`}}
                 onMouseDown={startClick}
                 ref={panelRef}
             >

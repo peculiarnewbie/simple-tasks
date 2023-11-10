@@ -12,6 +12,7 @@ export default function MainWindow(){
     {task:'Do Stuff', isEmpty:false},
     {task:'Zoom Meeting',  isEmpty:false}
   ]);
+  let pseudoTasks = tasks;
   const [deletedTask, setDeletedTask] = useState({task:'', index:-1})
   const [draggedTask, setDraggedTask] = useState({task:'', index:-1, pos:0})
 
@@ -51,11 +52,11 @@ export default function MainWindow(){
   }
 
   const reorderTask = (index:number, offset:number, pos?:number) => {
-    console.log(index, offset)
+    console.log(index, offset, pseudoTasks)
     if(offset == 0){
-      let tempArr = [...tasks]
+      let tempArr = [...pseudoTasks]
       if(tempArr[index].isEmpty){ // stop ordering
-        console.log("done", tasks, tasks[0])
+        console.log("done", pseudoTasks)
         tempArr.forEach((task) => {
           task.isEmpty = false;
         })
@@ -65,18 +66,19 @@ export default function MainWindow(){
 
       } else { // start ordering
         tempArr[index].isEmpty = true;
-        console.log('wtf')
+        console.log('wtf', pseudoTasks)
         setDraggedTask({task:tempArr[index].task, index:index, pos:pos ?? 0})
         // setTasks([...tempArr]);
       }
     }
     else {
-      let temp = [...tasks]
+      let temp = [...pseudoTasks]
       console.log('move', index, index + offset, temp);
       console.log(temp[index].task, temp[index + offset].task)
       const tempTask = temp[index];
       temp[index] = temp[index + offset];
       temp[index + offset] = tempTask;
+      pseudoTasks = [...temp];
       setTasks(temp);
     }
   }
